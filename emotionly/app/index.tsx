@@ -6,7 +6,7 @@ export default function Index() {
   return (
     <View style ={styles.container}>
       <Text>Edit app/index.tsx to edit this screen.</Text>
-      <Link href = './about'></Link>
+      <Link href = './about'>Button Here</Link>
     </View>
   );
 }
