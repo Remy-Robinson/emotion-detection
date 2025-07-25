@@ -7,4 +7,25 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    margin: 20,
+    alignItems: 'flex-end',
+  },
+  button: {
+    padding: 16,
+    backgroundColor: '#00000080',
+    borderRadius: 8,
+  },
+  text: {
+    fontSize: 16,
+    color: 'white',
+  },
 });
