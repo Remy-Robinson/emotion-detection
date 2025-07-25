@@ -1,83 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
-import * as FaceDetector from 'expo-face-detector';
-
-type Face = {
-  faceID: number;
-  bounds: {
-    origin: {
-      x: number;
-      y: number;
-    };
-    size: {
-      width: number;
-      height: number;
-    };
-  };
-  // Add other face properties you might use
-};
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 export default function CameraInput() {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [faces, setFaces] = useState<Face[]>([]);
-  const cameraRef = useRef<Camera>(null);
+  const [permission, requestPermission] = useCameraPermissions();
+  const cameraRef = useRef(null);
+  const screenWidth = Dimensions.get('window').width;
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+  if (!permission) return <View />;
 
-  const handleFacesDetected = ({ faces }: { faces: Face[] }) => {
-    // Only update state if faces array has changed
-    if (JSON.stringify(faces) !== JSON.stringify(faces)) {
-      setFaces(faces);
-    }
-  };
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
+  if (!permission.granted) {
     return (
-      <View style={styles.permissionDeniedContainer}>
+      <View style={styles.centered}>
         <Text style={styles.permissionText}>Camera permission not granted</Text>
+        <Pressable onPress={requestPermission} style={styles.button}>
+          <Text style={styles.buttonText}>Grant Permission</Text>
+        </Pressable>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Camera
+      <CameraView
         ref={cameraRef}
         style={styles.camera}
-        type={CameraType.front}
-        onFacesDetected={handleFacesDetected}
-        faceDetectorSettings={{
-          mode: FaceDetector.FaceDetectorMode.fast,
-          detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
-          runClassifications: FaceDetector.FaceDetectorClassifications.none,
-          minDetectionInterval: 100,
-          tracking: true,
-        }}
-      >
-        {faces.map((face) => (
-          <View
-            key={face.faceID}
-            style={[
-              styles.faceBox,
-              {
-                left: face.bounds.origin.x,
-                top: face.bounds.origin.y,
-                width: face.bounds.size.width,
-                height: face.bounds.size.height,
-              },
-            ]}
-          />
-        ))}
-      </Camera>
+        facing="front"
+        onCameraReady={() => console.log('Camera is ready')}
+      />
+      {/* Optional: Add some UI elements to confirm the camera is working */}
+      <View style={styles.overlay}>
+        <Text style={styles.overlayText}>Camera Preview</Text>
+      </View>
     </View>
   );
 }
@@ -85,26 +39,43 @@ export default function CameraInput() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: 'black', // Ensure background is black to see camera better
+    justifyContent: 'center',
   },
   camera: {
-    flex: 1,
-    aspectRatio: 1, // This might cause issues on some devices - consider removing
+    width: '100%',
+    aspectRatio: 3/4, // Standard camera aspect ratio
+    alignSelf: 'center',
   },
-  faceBox: {
-    position: 'absolute',
-    borderColor: 'red',
-    borderWidth: 2,
-    backgroundColor: 'transparent',
-  },
-  permissionDeniedContainer: {
+  centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#000',
   },
   permissionText: {
-    color: 'white',
+    color: '#fff',
     fontSize: 18,
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#1e90ff',
+    padding: 12,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 20,
+    alignSelf: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    borderRadius: 5,
+  },
+  overlayText: {
+    color: 'white',
   },
 });
