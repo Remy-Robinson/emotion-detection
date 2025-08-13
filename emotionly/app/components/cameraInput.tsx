@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Platform, Image } from 'react-native';
-import { Camera, CameraCapturedPicture, useCameraPermissions } from 'expo-camera';
-import Svg, { Rect, Text as SvgText } from 'react-native-svg';
+
+import React, { useRef, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { CameraView, useCameraPermissions, CameraType, FlashMode} from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -138,7 +138,8 @@ export default function CameraInput() {
       <View style={styles.topBar} />
 
       <View style={styles.container}>
-        <Camera
+        <CameraView
+        
           style={styles.camera}
           ref={cameraRef}
           ratio="16:9"
