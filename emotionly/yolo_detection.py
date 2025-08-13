@@ -5,7 +5,7 @@ from PIL import Image
 import io
 
 class YOLOFaceDetector:
-    def __init__(self, model_path: str = "yolov12.pt", conf_thres: float = 0.25, device: str = None):
+    def __init__(self, model_path: str = "C:\\Users\\remyr\\Documents\\GitHub\\emotion-detection\\emotionly\\yolov12n-face.pt", conf_thres: float = 0.25, device: str = None):
         """
         model_path: path to your yolov12 weights (pt, onnx, etc.)
         conf_thres: confidence threshold

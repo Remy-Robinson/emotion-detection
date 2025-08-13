@@ -7,7 +7,7 @@ from PIL import Image
 from yolo_detection import YOLOFaceDetector
 
 # ---------- Configuration ----------
-YOLO_WEIGHTS = "./yolo12n-face.pt"   # path to your YOLO weights
+YOLO_WEIGHTS = "emotionly/yolo12n-face.pt"   # path to your YOLO weights
 CONF_THRES = 0.25
 PORT = 5001
 
