@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { CameraView, useCameraPermissions, CameraType, FlashMode } from 'expo-camera';
+import { CameraView, useCameraPermissions, CameraType, FlashMode} from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -47,7 +47,7 @@ export default function CameraInput() {
 
       <View style={styles.container}>
         <CameraView
-          ref={cameraRef}
+        
           style={styles.camera}
           facing={cameraType}
           ratio="1:1"
